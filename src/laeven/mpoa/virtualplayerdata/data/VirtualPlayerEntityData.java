@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -52,6 +53,7 @@ public class VirtualPlayerEntityData implements PersistJson
 	private VirtualPlayerData parent;
 	
 	private Location location = new Location(Bukkit.getWorld(WorldUtils.getDefaultWorldName()),0,Bukkit.getWorlds().getFirst().getHighestBlockYAt(0,0),0);
+	private GameMode gamemode = GameMode.SURVIVAL;
 	private int expLevel = 0;
 	private float expProgress = 0.0f;
 	private boolean allowFlight = false;
@@ -110,6 +112,7 @@ public class VirtualPlayerEntityData implements PersistJson
 		Player p = this.parent.getActingPlayer();
 		
 		location = p.getLocation();
+		gamemode = p.getGameMode();
 		expLevel = p.getLevel();
 		expProgress = p.getExp();
 		allowFlight = p.getAllowFlight();
@@ -274,6 +277,7 @@ public class VirtualPlayerEntityData implements PersistJson
 		Player p = this.parent.getActingPlayer();
 		
 		p.teleport(location,TeleportCause.PLUGIN);
+		p.setGameMode(gamemode);
 		p.setLevel(expLevel);
 		p.setExp(expProgress);
 		p.setAllowFlight(allowFlight);
@@ -546,6 +550,7 @@ public class VirtualPlayerEntityData implements PersistJson
 	}
 	
 	public static final String LOCATION = "location";
+	public static final String GAMEMODE = "gamemode";
 	public static final String EXP_LEVEL = "exp_level";
 	public static final String EXP_PROGRESS = "exp_progress";
 	public static final String ALLOW_FLIGHT = "allow_flight";
@@ -582,6 +587,7 @@ public class VirtualPlayerEntityData implements PersistJson
 		JsonObject obj = new JsonObject();
 		
 		obj.add(LOCATION,Serialise.location(location));
+		obj.addProperty(GAMEMODE,gamemode.toString());
 		obj.addProperty(EXP_LEVEL,expLevel);
 		obj.addProperty(EXP_PROGRESS,expProgress);
 		obj.addProperty(ALLOW_FLIGHT,allowFlight);
@@ -725,6 +731,7 @@ public class VirtualPlayerEntityData implements PersistJson
 	public void deserialise(JsonObject obj) throws DeserialiseException
 	{
 		location = Deserialise.location(Deserialise.assertAndGetProperty(LOCATION,Deserialise.Type.JSON_OBJECT,obj).getAsJsonObject());
+		gamemode = Deserialise.assertEnum(Deserialise.assertAndGetProperty(GAMEMODE,Deserialise.Type.STRING,obj).getAsString(),GameMode.class);
 		expLevel = Deserialise.assertAndGetProperty(EXP_LEVEL,Deserialise.Type.NUMBER,obj).getAsInt();
 		expProgress = Deserialise.assertAndGetProperty(EXP_PROGRESS,Deserialise.Type.NUMBER,obj).getAsFloat();
 		allowFlight = Deserialise.assertAndGetProperty(ALLOW_FLIGHT,Deserialise.Type.BOOLEAN,obj).getAsBoolean();

@@ -1,5 +1,5 @@
 name: MPOA
-version: "1.0.1pr"
+version: "1.0.2pr"
 main: laeven.mpoa.MPOA
 description: Many Players One Account
 authors:

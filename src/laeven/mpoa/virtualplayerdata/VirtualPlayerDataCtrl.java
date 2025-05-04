@@ -918,6 +918,14 @@ public class VirtualPlayerDataCtrl implements Listener, Configurable
 			return false;
 		}
 		
+		// Edge case where a linked player is somehow also a acting player
+		if(isActingPlayer && isLinkedPlayer)
+		{
+			Logg.error("Could not login to account " + uid4.toString() + " using player " + actingPlayer.getName() + " because this player is listed as an acting player as well as a player linked to this virtual account!");
+			Logg.error("Acting players cannot also be linked to other virtual accounts!");
+			return false;
+		}
+		
 		// Check account is not already logged into another account
 		if(loggedInVirtualAccounts.inverse().containsKey(uid4))
 		{

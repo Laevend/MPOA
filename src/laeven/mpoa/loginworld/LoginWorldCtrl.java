@@ -111,8 +111,11 @@ public class LoginWorldCtrl implements Listener, Configurable
 	{
 		waitingAccounts.remove(p.getUniqueId());
 		p.setRespawnLocation(null);
-		p.setAllowFlight(false);
-		p.setGameMode(GameMode.SURVIVAL);
+		
+		if(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)
+		{
+			p.setAllowFlight(false);
+		}
 	}
 	
 	@EventHandler

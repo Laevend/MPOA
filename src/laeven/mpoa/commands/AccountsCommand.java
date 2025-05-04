@@ -360,6 +360,12 @@ public class AccountsCommand extends MPOACommand
 			return;
 		}
 		
+		if(VirtualPlayerDataCtrl.isPuppetingVirtualAccount(actingPlayer))
+		{
+			PrintUtils.error(sender,"This account is already puppeting a virtual account! You cannot login to another account!");
+			return;
+		}
+		
 		if(!VirtualPlayerDataCtrl.login(account,actingPlayer))
 		{
 			PrintUtils.error(sender,"An error occured attempting to login to account " + accountName);
@@ -448,6 +454,12 @@ public class AccountsCommand extends MPOACommand
 		}
 		
 		UUID linkedAccount = UUID.fromString(accountToLinkTo);
+		
+		if(VirtualPlayerDataCtrl.getActingAccounts().contains(linkedAccount))
+		{
+			PrintUtils.error(sender,"This player is designated as an acting player! It cannot be used to link to a virtual account!");
+			return;
+		}
 		
 		if(PlayerUtils.isOnline(linkedAccount))
 		{
