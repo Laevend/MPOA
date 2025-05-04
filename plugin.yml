@@ -1,0 +1,32 @@
+name: MPOA
+version: "1.0.1pr"
+main: laeven.mpoa.MPOA
+description: Many Players One Account
+authors:
+    - Laeven
+load: STARTUP
+api-version: '1.21.4'
+
+commands:
+    accounts:
+        description: Management of virtual accounts
+        aliases: [accs]
+        permission: mpoa.commands.accounts
+    login:
+        description: Login to a virtual account
+        aliases: [lin]
+        permission: mpoa.commands.login
+    logout:
+        description: Logout to a virtual account
+        aliases: [lout]
+        permission: mpoa.commands.logout
+    change-password:
+        description: Change your virtual accounts material pattern password
+        permission: mpoa.commands.change-password
+permissions:
+    mpoa.commands.login:
+        default: true
+    mpoa.commands.logout:
+        default: true
+    mpoa.commands.change-password:
+        default: true
